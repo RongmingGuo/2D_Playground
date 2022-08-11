@@ -1,0 +1,796 @@
+(* Content-type: application/vnd.wolfram.mathematica *)
+
+(*** Wolfram Notebook File ***)
+(* http://www.wolfram.com/nb *)
+
+(* CreatedBy='Mathematica 13.1' *)
+
+(*CacheID: 234*)
+(* Internal cache information:
+NotebookFileLineBreakTest
+NotebookFileLineBreakTest
+NotebookDataPosition[       158,          7]
+NotebookDataLength[     26615,        786]
+NotebookOptionsPosition[     19968,        660]
+NotebookOutlinePosition[     20545,        682]
+CellTagsIndexPosition[     20502,        679]
+WindowFrame->Normal*)
+
+(* Beginning of Notebook Content *)
+Notebook[{
+
+Cell[CellGroupData[{
+Cell["Lagrangian Equations", "Title",
+ ImageRegion->{{0, 1}, {0, 
+  1}},ExpressionUUID->"ade3ee55-c69b-4bea-8bc8-6504fa58b055"],
+
+Cell["Jeff Adams, Wolfram Research Inc.,  October 1992", "Text",
+ ImageRegion->{{0, 1}, {0, 
+  1}},ExpressionUUID->"971c3aa9-6e1d-49c0-99d4-89cbe2855f5b"],
+
+Cell[CellGroupData[{
+
+Cell["Introduction", "Subsection",
+ ImageRegion->{{0, 1}, {0, 
+  1}},ExpressionUUID->"ac7a287d-08d6-42af-94cf-0adbd62ed289"],
+
+Cell[TextData[{
+ "This notebook illustrates one way of using ",
+ StyleBox["Mathematica",
+  FontSlant->"Italic"],
+ " to solve some advanced theoretical mechanics problems using Lagrangian \
+Mechanics.  The example problems are taken from ",
+ StyleBox["Analytical Mechanics",
+  FontSlant->"Italic"],
+ ", Grant R. Fowles,  Fourth Edition, Saunders College Publishing, 1986."
+}], "Text",
+ ImageRegion->{{0, 1}, {0, 
+  1}},ExpressionUUID->"729eb8ee-1b57-4c20-a8fd-b2f161a615ab"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell["Function", "Subsection",
+ ImageRegion->{{0, 1}, {0, 
+  1}},ExpressionUUID->"12d85c0f-03ed-4358-a656-701c10b1fbff"],
+
+Cell["\<\
+The function LagrangianEquations[T, V, Q, genCoords] takes four arguments:  \
+the kinetic energy, T, of the system, the potential energy, V, of the system, \
+the non-conservative forces of the system, Q, and a list of the generalized \
+coordinates of the system.
+The function returns a list of the lagrangian equations for this system.
+
+Note, it is very important to explicitly declare all dependencies of T,V, and \
+Q on the generalized coordinates, as well as the explicit time dependence of \
+the generalized coordinates.\
+\>", "Text",
+ ImageRegion->{{0, 1}, {0, 
+  1}},ExpressionUUID->"e9739ee8-02d6-47e9-8326-60f41acb60eb"],
+
+Cell["\<\
+LagrangianEquations[T_,V_,Q_:0,genCoords_List] :=
+\tModule[{L=T-V},
+\t(D[D[L,D[#,t]],t] == Q + D[L,#])& /@ genCoords
+\t]\
+\>", "Input",
+ ImageRegion->{{0, 1}, {0, 
+  1}},ExpressionUUID->"058039a0-3165-4612-ade8-74372eaca5c2"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell["Example 1 : Harmonic Oscillator", "Subsection",
+ ImageRegion->{{0, 1}, {0, 
+  1}},ExpressionUUID->"9f3bfe6d-df62-4673-b562-ceaea2c116ba"],
+
+Cell["\<\
+genCoords = {x[t]};
+T = 1/2 m x'[t]^2;
+V = 1/2 K x[t]^2;
+Q = 0;\
+\>", "Input",
+ ImageRegion->{{0, 1}, {0, 
+  1}},ExpressionUUID->"48e7a56e-cbad-4ae0-9667-8ba44818515b"],
+
+Cell[CellGroupData[{
+
+Cell["LagrangianEquations[T, V, Q, genCoords]", "Input",
+ ImageRegion->{{0, 1}, {0, 
+  1}},ExpressionUUID->"2f49e3cb-b7a1-43a6-8b9a-e9cb93a2c3c8"],
+
+Cell[OutputFormData["\<\
+{m*Derivative[2][x][t] == -(K*x[t])}\
+\>", "\<\
+{m x''[t] == -(K x[t])}\
+\>"], "Output",
+ ImageRegion->{{0, 1}, {0, 
+  1}},ExpressionUUID->"60d64de1-e841-4889-a715-a81c01310d82"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell["DSolve[%,genCoords,t]", "Input",
+ ImageRegion->{{0, 1}, {0, 
+  1}},ExpressionUUID->"dd6e90a8-e0b7-481c-9cd1-7a3ba0c1d341"],
+
+Cell[OutputFormData["\<\
+{{x[t] -> E^((-I*K^(1/2)*t)/m^(1/2))*C[1] +
+     E^((I*K^(1/2)*t)/m^(1/2))*C[2]}}\
+\>", "\<\
+           (-I Sqrt[K] t)/Sqrt[m]
+{{x[t] -> E                       C[1] +
+
+      (I Sqrt[K] t)/Sqrt[m]
+     E                      C[2]}}\
+\>"], "Output",
+ ImageRegion->{{0, 1}, {0, 
+  1}},ExpressionUUID->"8ebb6414-0c64-4a8b-a8a4-bf0b7c8733bd"]
+}, Open  ]]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell["Example 2 :  Harmonic Oscillator with velocity damping", "Subsection",
+ ImageRegion->{{0, 1}, {0, 
+  1}},ExpressionUUID->"97b1e507-0a10-4b11-8651-0d2eeb402d8b"],
+
+Cell["\<\
+genCoords = {x[t]};
+T = 1/2 m x'[t]^2;
+V = 1/2 K x[t]^2;
+Q = -c x'[t];\
+\>", "Input",
+ ImageRegion->{{0, 1}, {0, 
+  1}},ExpressionUUID->"b73b7ff7-6f5e-46dc-8619-104b1dbe78db"],
+
+Cell[CellGroupData[{
+
+Cell["LagrangianEquations[T, V, Q, genCoords]", "Input",
+ ImageRegion->{{0, 1}, {0, 
+  1}},ExpressionUUID->"ba3b9a24-70e0-446f-b015-8a28adca7e38"],
+
+Cell[OutputFormData["\<\
+{m*Derivative[2][x][t] == -(K*x[t]) - c*Derivative[1][x][t]}\
+\>", "\<\
+{m x''[t] == -(K x[t]) - c x'[t]}\
+\>"], "Output",
+ ImageRegion->{{0, 1}, {0, 
+  1}},ExpressionUUID->"92aca7ea-03f7-4c16-83c7-4a46d5764937"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell["DSolve[%,genCoords,t]", "Input",
+ ImageRegion->{{0, 1}, {0, 
+  1}},ExpressionUUID->"c7d2d46a-11b7-40ec-838e-738a8740167b"],
+
+Cell[OutputFormData["\<\
+{{x[t] -> C[1]/E^(((c + (c^2 - 4*K*m)^(1/2))*t)/(2*m)) +
+     E^(((-c + (c^2 - 4*K*m)^(1/2))*t)/(2*m))*C[2]}}\
+\>", "\<\
+                        C[1]
+{{x[t] -> --------------------------------- +
+                       2
+           ((c + Sqrt[c  - 4 K m]) t)/(2 m)
+          E
+
+                   2
+      ((-c + Sqrt[c  - 4 K m]) t)/(2 m)
+     E                                  C[2]}}\
+\>"], "Output",
+ ImageRegion->{{0, 1}, {0, 
+  1}},ExpressionUUID->"1afa5def-4d80-4f99-a341-b46ec2e326dc"]
+}, Open  ]]
+}, Closed]],
+
+Cell[CellGroupData[{
+
+Cell["Example 3 : Single Particle in a Central Field", "Subsection",
+ ImageRegion->{{0, 1}, {0, 
+  1}},ExpressionUUID->"cda0b697-e5a1-4aba-ab70-89f9654723e6"],
+
+Cell["Using polar coordinates", "Text",
+ ImageRegion->{{0, 1}, {0, 
+  1}},ExpressionUUID->"c090c9c1-a1bd-4598-8656-c3287fce45dd"],
+
+Cell["\<\
+genCoords = {r[t],theta[t]};
+T = 1/2 m ( r'[t]^2 + r[t]^2 theta'[t]^2   );
+V = v[r[t]];
+Q = 0;\
+\>", "Input",
+ ImageRegion->{{0, 1}, {0, 1}},
+ CellLabel->
+  "In[116]:=",ExpressionUUID->"0fa913f3-7126-43a3-9dc9-89e9e7f7adf8"],
+
+Cell[CellGroupData[{
+
+Cell["LagrangianEquations[T, V, Q, genCoords]", "Input",
+ ImageRegion->{{0, 1}, {0, 1}},
+ CellLabel->
+  "In[120]:=",ExpressionUUID->"daeb9f25-22ee-4822-bea2-e9863ea2860e"],
+
+Cell[BoxData[
+ RowBox[{"{", 
+  RowBox[{
+   RowBox[{
+    RowBox[{"m", " ", 
+     RowBox[{
+      SuperscriptBox["r", "\[Prime]\[Prime]",
+       MultilineFunction->None], "[", "t", "]"}]}], "\[Equal]", 
+    RowBox[{
+     RowBox[{"m", " ", 
+      RowBox[{"r", "[", "t", "]"}], " ", 
+      SuperscriptBox[
+       RowBox[{
+        SuperscriptBox["theta", "\[Prime]",
+         MultilineFunction->None], "[", "t", "]"}], "2"]}], "-", 
+     RowBox[{
+      SuperscriptBox["v", "\[Prime]",
+       MultilineFunction->None], "[", 
+      RowBox[{"r", "[", "t", "]"}], "]"}]}]}], ",", 
+   RowBox[{
+    RowBox[{
+     RowBox[{"2", " ", "m", " ", 
+      RowBox[{"r", "[", "t", "]"}], " ", 
+      RowBox[{
+       SuperscriptBox["r", "\[Prime]",
+        MultilineFunction->None], "[", "t", "]"}], " ", 
+      RowBox[{
+       SuperscriptBox["theta", "\[Prime]",
+        MultilineFunction->None], "[", "t", "]"}]}], "+", 
+     RowBox[{"m", " ", 
+      SuperscriptBox[
+       RowBox[{"r", "[", "t", "]"}], "2"], " ", 
+      RowBox[{
+       SuperscriptBox["theta", "\[Prime]\[Prime]",
+        MultilineFunction->None], "[", "t", "]"}]}]}], "\[Equal]", "0"}]}], 
+  "}"}]], "Output",
+ CellChangeTimes->{3.869091971844831*^9},
+ ImageRegion->{{0, 1}, {0, 1}},
+ CellLabel->
+  "Out[120]=",ExpressionUUID->"8ac80d34-4498-4d64-98b8-413930b48000"]
+}, Open  ]]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell["Example 4 :  Atwood's Machine", "Subsection",
+ ImageRegion->{{0, 1}, {0, 
+  1}},ExpressionUUID->"025c1c2b-07a8-47fe-9ce2-ac0dfbeba9ea"],
+
+Cell["\<\
+A mechanical system known as Atwood's machine consists of two weights of mass \
+m1 and m2 , respectively, connected by a light inextensible cord of length l \
+which passes over a pulley.  The system has one degree of freedom.  Let x \
+represent the configuration of the system, where x is the vertical distance \
+from the pulley to m1.  I is the moment of inertia of the pulley with radius \
+a.\
+\>", "Text",
+ ImageRegion->{{0, 1}, {0, 
+  1}},ExpressionUUID->"6c23bc28-1b81-4e90-af90-44bbee5d4dff"],
+
+Cell["\<\
+genCoords = {x[t]};
+T = 1/2 m1 x'[t]^2 + 1/2 m2 x'[t]^2 + 1/2 I x'[t]^2/ a^2;
+V = -m1 q x[t] - m2 q (l - x[t]);
+Q = 0;\
+\>", "Input",
+ ImageRegion->{{0, 1}, {0, 
+  1}},ExpressionUUID->"cc3b1473-54e7-4049-b7e0-83ff76d4d90e"],
+
+Cell[CellGroupData[{
+
+Cell["LagrangianEquations[T, V, Q, genCoords]", "Input",
+ ImageRegion->{{0, 1}, {0, 
+  1}},ExpressionUUID->"3418acc1-2568-4c3f-affc-ac5a874090b9"],
+
+Cell[OutputFormData["\<\
+{(I*Derivative[2][x][t])/a^2 + m1*Derivative[2][x][t] +
+    m2*Derivative[2][x][t] == m1*q - m2*q}\
+\>", "\<\
+ I x''[t]
+{-------- + m1 x''[t] + m2 x''[t] == m1 q - m2 q}
+     2
+    a\
+\>"], "Output",
+ ImageRegion->{{0, 1}, {0, 
+  1}},ExpressionUUID->"8675fba1-142f-432e-96ea-f498797e230f"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell["Solve[%, x''[t]]", "Input",
+ ImageRegion->{{0, 1}, {0, 
+  1}},ExpressionUUID->"b59ca81c-d963-4138-8370-7bbbe4bcca39"],
+
+Cell[OutputFormData["\<\
+{{Derivative[2][x][t] ->
+    -((-(a^2*m1*q) + a^2*m2*q)/(I + a^2*m1 + a^2*m2))}}\
+\>", "\<\
+                 2          2
+              -(a  m1 q) + a  m2 q
+{{x''[t] -> -(--------------------)}}
+                    2       2
+               I + a  m1 + a  m2\
+\>"], "Output",
+ ImageRegion->{{0, 1}, {0, 
+  1}},ExpressionUUID->"9c2777f8-daaa-47ee-bf0a-6d06d3a167bb"]
+}, Open  ]]
+}, Closed]],
+
+Cell[CellGroupData[{
+
+Cell["Example 5 :  Double Atwood  Machine", "Subsection",
+ ImageRegion->{{0, 1}, {0, 
+  1}},ExpressionUUID->"abcf6d2d-5908-4a38-a771-c6beda644a08"],
+
+Cell["\<\
+Replace one of the weights in the atwood machine by another pulley supporting \
+two weights connected by another cord.  The system now has two degrees of \
+freedom.  We shall specify the coordinates x1 and x2.  For simplicity we \
+shall neglect the masses of the pulleys in this case.\
+\>", "Text",
+ ImageRegion->{{0, 1}, {0, 
+  1}},ExpressionUUID->"9ef0c1cd-40a0-4df4-9853-a3568cc197e7"],
+
+Cell["\<\
+genCoords = {x1[t],x2[t]};
+T = 1/2 m1 x1'[t]^2 + 1/2 m2 (-x1'[t] + x2'[t])^2 +
+\t 1/2 m3 ( -x1'[t] - x2'[t])^2;
+V = -m1 q x1[t] - m2 q (l1 - x1[t] + x2[t]) -
+\tm3 g (l1 - x1[t] + l2 - x2[t]);
+Q = 0;\
+\>", "Input",
+ ImageRegion->{{0, 1}, {0, 1}},
+ CellLabel->"In[76]:=",ExpressionUUID->"d6b5983f-34b9-4415-9d54-a092b2ff18d3"],
+
+Cell[CellGroupData[{
+
+Cell["LagrangianEquations[T, V, Q, genCoords]", "Input",
+ ImageRegion->{{0, 1}, {0, 1}},
+ CellLabel->"In[80]:=",ExpressionUUID->"e2a4b645-8be0-4190-b586-81ce9e4d48f2"],
+
+Cell[BoxData[
+ RowBox[{"{", 
+  RowBox[{
+   RowBox[{
+    RowBox[{
+     RowBox[{"10", " ", 
+      RowBox[{
+       SuperscriptBox["x1", "\[Prime]\[Prime]",
+        MultilineFunction->None], "[", "t", "]"}]}], "-", 
+     RowBox[{"5", " ", 
+      RowBox[{"(", 
+       RowBox[{
+        RowBox[{"-", 
+         RowBox[{
+          SuperscriptBox["x1", "\[Prime]\[Prime]",
+           MultilineFunction->None], "[", "t", "]"}]}], "-", 
+        RowBox[{
+         SuperscriptBox["x2", "\[Prime]\[Prime]",
+          MultilineFunction->None], "[", "t", "]"}]}], ")"}]}], "-", 
+     RowBox[{"5", " ", 
+      RowBox[{"(", 
+       RowBox[{
+        RowBox[{"-", 
+         RowBox[{
+          SuperscriptBox["x1", "\[Prime]\[Prime]",
+           MultilineFunction->None], "[", "t", "]"}]}], "+", 
+        RowBox[{
+         SuperscriptBox["x2", "\[Prime]\[Prime]",
+          MultilineFunction->None], "[", "t", "]"}]}], ")"}]}]}], "\[Equal]", 
+    RowBox[{
+     RowBox[{"-", "49.050000000000004`"}], "+", 
+     RowBox[{"5", " ", "q"}]}]}], ",", 
+   RowBox[{
+    RowBox[{
+     RowBox[{
+      RowBox[{"-", "5"}], " ", 
+      RowBox[{"(", 
+       RowBox[{
+        RowBox[{"-", 
+         RowBox[{
+          SuperscriptBox["x1", "\[Prime]\[Prime]",
+           MultilineFunction->None], "[", "t", "]"}]}], "-", 
+        RowBox[{
+         SuperscriptBox["x2", "\[Prime]\[Prime]",
+          MultilineFunction->None], "[", "t", "]"}]}], ")"}]}], "+", 
+     RowBox[{"5", " ", 
+      RowBox[{"(", 
+       RowBox[{
+        RowBox[{"-", 
+         RowBox[{
+          SuperscriptBox["x1", "\[Prime]\[Prime]",
+           MultilineFunction->None], "[", "t", "]"}]}], "+", 
+        RowBox[{
+         SuperscriptBox["x2", "\[Prime]\[Prime]",
+          MultilineFunction->None], "[", "t", "]"}]}], ")"}]}]}], "\[Equal]", 
+    RowBox[{
+     RowBox[{"-", "49.050000000000004`"}], "+", 
+     RowBox[{"5", " ", "q"}]}]}]}], "}"}]], "Output",
+ CellChangeTimes->{3.8690915474760427`*^9},
+ ImageRegion->{{0, 1}, {0, 1}},
+ CellLabel->"Out[80]=",ExpressionUUID->"0771a5b1-9fa2-471d-abb5-fba2da8ae5a1"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell["Simplify[ Solve[%, {x1''[t],x2''[t]}] ]", "Input",
+ ImageRegion->{{0, 1}, {0, 1}},
+ CellLabel->"In[81]:=",ExpressionUUID->"64431385-be40-4f5c-add2-661e0d839d8f"],
+
+Cell[BoxData[
+ RowBox[{"{", 
+  RowBox[{"{", 
+   RowBox[{
+    RowBox[{
+     RowBox[{
+      SuperscriptBox["x1", "\[Prime]\[Prime]",
+       MultilineFunction->None], "[", "t", "]"}], "\[Rule]", 
+     RowBox[{
+      RowBox[{"-", "2.4525`"}], "+", 
+      RowBox[{"0.25`", " ", "q"}]}]}], ",", 
+    RowBox[{
+     RowBox[{
+      SuperscriptBox["x2", "\[Prime]\[Prime]",
+       MultilineFunction->None], "[", "t", "]"}], "\[Rule]", 
+     RowBox[{
+      RowBox[{"-", "4.905`"}], "+", 
+      RowBox[{"0.5`", " ", "q"}]}]}]}], "}"}], "}"}]], "Output",
+ CellChangeTimes->{3.8690915525191*^9},
+ ImageRegion->{{0, 1}, {0, 1}},
+ CellLabel->"Out[81]=",ExpressionUUID->"cb87b8f8-fbee-4d93-8ebd-de96c103822a"]
+}, Open  ]]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell["Example 6 :  Particle Sliding on a Movable Inclined Plane", "Subsection",
+ ImageRegion->{{0, 1}, {0, 
+  1}},ExpressionUUID->"dd9bb01a-ff78-461c-a8a2-20ab0a07e3bd"],
+
+Cell["\<\
+Consider a particle sliding on a smooth inclined plane which itself, is free \
+to slide on a smooth horizontal surface. There are two degrees of freedom x1 \
+and x2, the horizontal displacement of the plane from some reference point \
+and the displacement of the particle from some reference point on the plane.  \
+Using the law of cosines for the velocity of the particle, we have:\
+\>", "Text",
+ ImageRegion->{{0, 1}, {0, 
+  1}},ExpressionUUID->"7237aa9e-e3b3-4378-b334-9e4eee8695aa"],
+
+Cell["\<\
+genCoords = {x1[t],x2[t]};
+T = 1/2 m (x1'[t]^2 + x2'[t]^2+2 x1'[t] x2'[t] Cos[theta]) +
+\t\t1/2 M x1'[t]^2;
+V = - m q x2[t] Sin[theta] + cons;
+Q = 0;\
+\>", "Input",
+ ImageRegion->{{0, 1}, {0, 
+  1}},ExpressionUUID->"84543189-a3b7-42f0-ba48-f7311b3102de"],
+
+Cell[CellGroupData[{
+
+Cell["LagrangianEquations[T, V, Q, genCoords]", "Input",
+ ImageRegion->{{0, 1}, {0, 
+  1}},ExpressionUUID->"6ad94a18-6ade-4266-9cab-aa296d875cd3"],
+
+Cell[OutputFormData["\<\
+{M*Derivative[2][x1][t] +
+    (m*(2*Derivative[2][x1][t] +
+         2*Cos[theta]*Derivative[2][x2][t]))/2 == 0,
+  (m*(2*Cos[theta]*Derivative[2][x1][t] +
+        2*Derivative[2][x2][t]))/2 == m*q*Sin[theta]}\
+\>", "\<\
+             m (2 x1''[t] + 2 Cos[theta] x2''[t])
+{M x1''[t] + ------------------------------------ == 0,
+                              2
+
+  m (2 Cos[theta] x1''[t] + 2 x2''[t])
+  ------------------------------------ == m q Sin[theta]}
+                   2\
+\>"], "Output",
+ ImageRegion->{{0, 1}, {0, 
+  1}},ExpressionUUID->"dc6111f1-d56f-4a94-96ee-2fcd18128384"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell["Simplify[ Solve[%, {x1''[t],x2''[t]}] ]", "Input",
+ ImageRegion->{{0, 1}, {0, 
+  1}},ExpressionUUID->"ba7fd185-57b1-481f-a440-deee5c9c3cb5"],
+
+Cell[OutputFormData["\<\
+{{Derivative[2][x1][t] ->
+    (m*q*Sin[2*theta])/(-m - 2*M + m*Cos[2*theta]),
+   Derivative[2][x2][t] ->
+    (2*(m + M)*q*Sin[theta])/(m + 2*M - m*Cos[2*theta])}}\
+\>", "\<\
+                 m q Sin[2 theta]
+{{x1''[t] -> -------------------------,
+             -m - 2 M + m Cos[2 theta]
+
+               2 (m + M) q Sin[theta]
+   x2''[t] -> ------------------------}}
+              m + 2 M - m Cos[2 theta]\
+\>"], "Output",
+ ImageRegion->{{0, 1}, {0, 
+  1}},ExpressionUUID->"026b0372-25c2-4477-9f83-0606650d32a2"]
+}, Open  ]]
+}, Closed]],
+
+Cell[CellGroupData[{
+
+Cell["Example 7 :  Spherical pendulum, or bar of soap in a bowl", "Subsection",
+ ImageRegion->{{0, 1}, {0, 
+  1}},ExpressionUUID->"62dd3e2a-f03c-48f7-987c-7246b0f1a805"],
+
+Cell["\<\
+genCoords = {theta[t],phi[t]};
+T = 1/2 m l^2 (theta'[t]^2 + Sin[theta[t]]^2 phi'[t]^2);
+V = m g l (1 - Cos[theta[t]]);
+Q = 0;\
+\>", "Input",
+ ImageRegion->{{0, 1}, {0, 
+  1}},ExpressionUUID->"d97a872b-cdb5-464e-b0ef-fdc955a33091"],
+
+Cell[CellGroupData[{
+
+Cell["LagrangianEquations[T, V, Q, genCoords]", "Input",
+ ImageRegion->{{0, 1}, {0, 
+  1}},ExpressionUUID->"ea2ff9dd-e79f-4145-a0f1-e2b5e516ba02"],
+
+Cell[OutputFormData["\<\
+{l^2*m*Derivative[2][theta][t] ==
+   -(g*l*m*Sin[theta[t]]) +
+    l^2*m*Cos[theta[t]]*Sin[theta[t]]*Derivative[1][phi][t]^2\\
+   , 2*l^2*m*Cos[theta[t]]*Sin[theta[t]]*
+     Derivative[1][phi][t]*Derivative[1][theta][t] +
+    l^2*m*Sin[theta[t]]^2*Derivative[2][phi][t] == 0}\
+\>", "\<\
+  2
+{l  m theta''[t] == -(g l m Sin[theta[t]]) +
+
+     2                                      2
+    l  m Cos[theta[t]] Sin[theta[t]] phi'[t] ,
+
+     2
+  2 l  m Cos[theta[t]] Sin[theta[t]] phi'[t] theta'[t] +
+
+     2                2
+    l  m Sin[theta[t]]  phi''[t] == 0}\
+\>"], "Output",
+ ImageRegion->{{0, 1}, {0, 
+  1}},ExpressionUUID->"2f000ed5-ac64-4865-8b6d-c04967397630"]
+}, Open  ]],
+
+Cell["\<\
+Given that phi is an ignorable coordinate then  m l^2 Sin[theta[t]]^2  \
+phi'[t] = constant\
+\>", "Text",
+ ImageRegion->{{0, 1}, {0, 
+  1}},ExpressionUUID->"08812d85-8682-4e87-92fa-f5e325a36f72"],
+
+Cell[CellGroupData[{
+
+Cell["%  /.  phi'[t] -> h1/ (m l^2 Sin[theta[t]]^2 )", "Input",
+ ImageRegion->{{0, 1}, {0, 
+  1}},ExpressionUUID->"7dcc7a2a-f529-4403-a495-75566205efaf"],
+
+Cell[OutputFormData["\<\
+{l^2*m*Derivative[2][theta][t] ==
+   (h1^2*Cot[theta[t]]*Csc[theta[t]]^2)/(l^2*m) -
+    g*l*m*Sin[theta[t]],
+  2*h1*Cot[theta[t]]*Derivative[1][theta][t] +
+    l^2*m*Sin[theta[t]]^2*Derivative[2][phi][t] == 0}\
+\>", "\<\
+                      2                            2
+  2                 h1  Cot[theta[t]] Csc[theta[t]]
+{l  m theta''[t] == -------------------------------- -
+                                   2
+                                  l  m
+
+    g l m Sin[theta[t]],
+
+  2 h1 Cot[theta[t]] theta'[t] +
+
+     2                2
+    l  m Sin[theta[t]]  phi''[t] == 0}\
+\>"], "Output",
+ ImageRegion->{{0, 1}, {0, 
+  1}},ExpressionUUID->"929d531d-7d42-4ee1-a5a6-353db995dc5b"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell["Solve[%,theta''[t]]", "Input",
+ ImageRegion->{{0, 1}, {0, 
+  1}},ExpressionUUID->"e8bdd70a-f986-42ba-ac93-9c02c9c47e14"],
+
+Cell[OutputFormData["\<\
+{{Derivative[2][theta][t] ->
+    ((h1^2*Cot[theta[t]]*Csc[theta[t]]^2)/(l^2*m) -
+       g*l*m*Sin[theta[t]])/(l^2*m)}}\
+\>", "\<\
+{{theta''[t] ->
+
+      2                            2
+    h1  Cot[theta[t]] Csc[theta[t]]
+    -------------------------------- - g l m Sin[theta[t]]
+                   2
+                  l  m
+    ------------------------------------------------------}}
+                              2
+                             l  m\
+\>"], "Output",
+ ImageRegion->{{0, 1}, {0, 
+  1}},ExpressionUUID->"bf5fa73b-ea7c-4724-9d2c-67c9e3831f03"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell["thetaEqu = Simplify[ % /. {h1 -> h l^2 m}]", "Input",
+ ImageRegion->{{0, 1}, {0, 
+  1}},ExpressionUUID->"fca47f18-1bef-47f0-8a24-0f353a86c312"],
+
+Cell[OutputFormData["\<\
+{{Derivative[2][theta][t] ->
+    h^2*Cot[theta[t]]*Csc[theta[t]]^2 - (g*Sin[theta[t]])/l}}\
+\>", "\<\
+{{theta''[t] ->
+
+     2                            2   g Sin[theta[t]]
+    h  Cot[theta[t]] Csc[theta[t]]  - ---------------}}
+                                             l\
+\>"], "Output",
+ ImageRegion->{{0, 1}, {0, 
+  1}},ExpressionUUID->"cab6b30b-9e86-45c3-b6ce-3352d649405c"]
+}, Open  ]],
+
+Cell["\<\
+In one special case, if phi = constant then phi' is zero and so h=0 and we \
+have the simple pendulum case.\
+\>", "Text",
+ ImageRegion->{{0, 1}, {0, 
+  1}},ExpressionUUID->"06a5cdad-3259-4faa-8c7d-b9ffe7e3c1a1"]
+}, Closed]]
+}, Open  ]]
+},
+WindowToolbars->{},
+CellGrouping->Manual,
+WindowSize->{478., 465.5},
+WindowMargins->{{Automatic, -4.5}, {Automatic, 0}},
+PrivateNotebookOptions->{"VersionedStylesheet"->{"Default.nb"[8.] -> True}},
+ShowCellLabel->True,
+ShowCellTags->False,
+FrontEndVersion->"13.1 for Microsoft Windows (64-bit) (2022\:5e746\:670816\
+\:65e5)",
+StyleDefinitions->"Default.nb",
+ExpressionUUID->"56df6556-61c7-46d1-9548-44a19a795c1e"
+]
+(* End of Notebook Content *)
+
+(* Internal cache information *)
+(*CellTagsOutline
+CellTagsIndex->{}
+*)
+(*CellTagsIndex
+CellTagsIndex->{}
+*)
+(*NotebookFileOutline
+Notebook[{
+Cell[CellGroupData[{
+Cell[580, 22, 127, 2, 81, "Title",ExpressionUUID->"ade3ee55-c69b-4bea-8bc8-6504fa58b055"],
+Cell[710, 26, 154, 2, 28, "Text",ExpressionUUID->"971c3aa9-6e1d-49c0-99d4-89cbe2855f5b"],
+Cell[CellGroupData[{
+Cell[889, 32, 124, 2, 36, "Subsection",ExpressionUUID->"ac7a287d-08d6-42af-94cf-0adbd62ed289"],
+Cell[1016, 36, 473, 11, 79, "Text",ExpressionUUID->"729eb8ee-1b57-4c20-a8fd-b2f161a615ab"]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[1526, 52, 120, 2, 36, "Subsection",ExpressionUUID->"12d85c0f-03ed-4358-a656-701c10b1fbff"],
+Cell[1649, 56, 638, 12, 164, "Text",ExpressionUUID->"e9739ee8-02d6-47e9-8326-60f41acb60eb"],
+Cell[2290, 70, 235, 7, 82, "Input",ExpressionUUID->"058039a0-3165-4612-ade8-74372eaca5c2"]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[2562, 82, 143, 2, 36, "Subsection",ExpressionUUID->"9f3bfe6d-df62-4673-b562-ceaea2c116ba"],
+Cell[2708, 86, 178, 7, 82, "Input",ExpressionUUID->"48e7a56e-cbad-4ae0-9667-8ba44818515b"],
+Cell[CellGroupData[{
+Cell[2911, 97, 146, 2, 31, "Input",ExpressionUUID->"2f49e3cb-b7a1-43a6-8b9a-e9cb93a2c3c8"],
+Cell[3060, 101, 203, 6, 33, "Output",ExpressionUUID->"60d64de1-e841-4889-a715-a81c01310d82"]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[3300, 112, 128, 2, 31, "Input",ExpressionUUID->"dd6e90a8-e0b7-481c-9cd1-7a3ba0c1d341"],
+Cell[3431, 116, 363, 11, 71, "Output",ExpressionUUID->"8ebb6414-0c64-4a8b-a8a4-bf0b7c8733bd"]
+}, Open  ]]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[3843, 133, 166, 2, 53, "Subsection",ExpressionUUID->"97b1e507-0a10-4b11-8651-0d2eeb402d8b"],
+Cell[4012, 137, 185, 7, 70, "Input",ExpressionUUID->"b73b7ff7-6f5e-46dc-8619-104b1dbe78db"],
+Cell[CellGroupData[{
+Cell[4222, 148, 146, 2, 70, "Input",ExpressionUUID->"ba3b9a24-70e0-446f-b015-8a28adca7e38"],
+Cell[4371, 152, 237, 6, 70, "Output",ExpressionUUID->"92aca7ea-03f7-4c16-83c7-4a46d5764937"]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[4645, 163, 128, 2, 70, "Input",ExpressionUUID->"c7d2d46a-11b7-40ec-838e-738a8740167b"],
+Cell[4776, 167, 517, 15, 70, "Output",ExpressionUUID->"1afa5def-4d80-4f99-a341-b46ec2e326dc"]
+}, Open  ]]
+}, Closed]],
+Cell[CellGroupData[{
+Cell[5342, 188, 158, 2, 28, "Subsection",ExpressionUUID->"cda0b697-e5a1-4aba-ab70-89f9654723e6"],
+Cell[5503, 192, 129, 2, 28, "Text",ExpressionUUID->"c090c9c1-a1bd-4598-8656-c3287fce45dd"],
+Cell[5635, 196, 234, 8, 82, "Input",ExpressionUUID->"0fa913f3-7126-43a3-9dc9-89e9e7f7adf8"],
+Cell[CellGroupData[{
+Cell[5894, 208, 171, 3, 31, "Input",ExpressionUUID->"daeb9f25-22ee-4822-bea2-e9863ea2860e"],
+Cell[6068, 213, 1314, 39, 53, "Output",ExpressionUUID->"8ac80d34-4498-4d64-98b8-413930b48000"]
+}, Open  ]]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[7431, 258, 141, 2, 36, "Subsection",ExpressionUUID->"025c1c2b-07a8-47fe-9ce2-ac0dfbeba9ea"],
+Cell[7575, 262, 508, 9, 113, "Text",ExpressionUUID->"6c23bc28-1b81-4e90-af90-44bbee5d4dff"],
+Cell[8086, 273, 233, 7, 82, "Input",ExpressionUUID->"cc3b1473-54e7-4049-b7e0-83ff76d4d90e"],
+Cell[CellGroupData[{
+Cell[8344, 284, 146, 2, 31, "Input",ExpressionUUID->"3418acc1-2568-4c3f-affc-ac5a874090b9"],
+Cell[8493, 288, 314, 10, 61, "Output",ExpressionUUID->"8675fba1-142f-432e-96ea-f498797e230f"]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[8844, 303, 123, 2, 31, "Input",ExpressionUUID->"b59ca81c-d963-4138-8370-7bbbe4bcca39"],
+Cell[8970, 307, 389, 11, 71, "Output",ExpressionUUID->"9c2777f8-daaa-47ee-bf0a-6d06d3a167bb"]
+}, Open  ]]
+}, Closed]],
+Cell[CellGroupData[{
+Cell[9408, 324, 147, 2, 28, "Subsection",ExpressionUUID->"abcf6d2d-5908-4a38-a771-c6beda644a08"],
+Cell[9558, 328, 398, 7, 79, "Text",ExpressionUUID->"9ef0c1cd-40a0-4df4-9853-a3568cc197e7"],
+Cell[9959, 337, 334, 9, 116, "Input",ExpressionUUID->"d6b5983f-34b9-4415-9d54-a092b2ff18d3"],
+Cell[CellGroupData[{
+Cell[10318, 350, 167, 2, 31, "Input",ExpressionUUID->"e2a4b645-8be0-4190-b586-81ce9e4d48f2"],
+Cell[10488, 354, 2049, 60, 82, "Output",ExpressionUUID->"0771a5b1-9fa2-471d-abb5-fba2da8ae5a1"]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[12574, 419, 167, 2, 31, "Input",ExpressionUUID->"64431385-be40-4f5c-add2-661e0d839d8f"],
+Cell[12744, 423, 692, 20, 29, "Output",ExpressionUUID->"cb87b8f8-fbee-4d93-8ebd-de96c103822a"]
+}, Open  ]]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[13485, 449, 169, 2, 53, "Subsection",ExpressionUUID->"dd9bb01a-ff78-461c-a8a2-20ab0a07e3bd"],
+Cell[13657, 453, 496, 8, 113, "Text",ExpressionUUID->"7237aa9e-e3b3-4378-b334-9e4eee8695aa"],
+Cell[14156, 463, 264, 8, 99, "Input",ExpressionUUID->"84543189-a3b7-42f0-ba48-f7311b3102de"],
+Cell[CellGroupData[{
+Cell[14445, 475, 146, 2, 31, "Input",ExpressionUUID->"6ad94a18-6ade-4266-9cab-aa296d875cd3"],
+Cell[14594, 479, 607, 16, 90, "Output",ExpressionUUID->"dc6111f1-d56f-4a94-96ee-2fcd18128384"]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[15238, 500, 146, 2, 70, "Input",ExpressionUUID->"ba7fd185-57b1-481f-a440-deee5c9c3cb5"],
+Cell[15387, 504, 537, 15, 70, "Output",ExpressionUUID->"026b0372-25c2-4477-9f83-0606650d32a2"]
+}, Open  ]]
+}, Closed]],
+Cell[CellGroupData[{
+Cell[15973, 525, 169, 2, 45, "Subsection",ExpressionUUID->"62dd3e2a-f03c-48f7-987c-7246b0f1a805"],
+Cell[16145, 529, 240, 7, 82, "Input",ExpressionUUID->"d97a872b-cdb5-464e-b0ef-fdc955a33091"],
+Cell[CellGroupData[{
+Cell[16410, 540, 146, 2, 31, "Input",ExpressionUUID->"ea2ff9dd-e79f-4145-a0f1-e2b5e516ba02"],
+Cell[16559, 544, 689, 21, 127, "Output",ExpressionUUID->"2f000ed5-ac64-4865-8b6d-c04967397630"]
+}, Open  ]],
+Cell[17263, 568, 205, 5, 45, "Text",ExpressionUUID->"08812d85-8682-4e87-92fa-f5e325a36f72"],
+Cell[CellGroupData[{
+Cell[17493, 577, 153, 2, 31, "Input",ExpressionUUID->"7dcc7a2a-f529-4403-a495-75566205efaf"],
+Cell[17649, 581, 712, 21, 137, "Output",ExpressionUUID->"929d531d-7d42-4ee1-a5a6-353db995dc5b"]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[18398, 607, 126, 2, 31, "Input",ExpressionUUID->"e8bdd70a-f986-42ba-ac93-9c02c9c47e14"],
+Cell[18527, 611, 581, 17, 118, "Output",ExpressionUUID->"bf5fa73b-ea7c-4724-9d2c-67c9e3831f03"]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[19145, 633, 149, 2, 31, "Input",ExpressionUUID->"fca47f18-1bef-47f0-8a24-0f353a86c312"],
+Cell[19297, 637, 407, 11, 71, "Output",ExpressionUUID->"cab6b30b-9e86-45c3-b6ce-3352d649405c"]
+}, Open  ]],
+Cell[19719, 651, 221, 5, 45, "Text",ExpressionUUID->"06a5cdad-3259-4faa-8c7d-b9ffe7e3c1a1"]
+}, Closed]]
+}, Open  ]]
+}
+]
+*)
+
+(* End of internal cache information *)
+
