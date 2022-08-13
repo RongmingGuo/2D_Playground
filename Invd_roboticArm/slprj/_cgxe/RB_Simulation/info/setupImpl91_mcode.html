@@ -1,0 +1,63 @@
+<!-- saved from url=(0014)about:internet -->
+<html>
+<body>
+<script src="resources/eml_report_loadable_data.js"></script>
+<div class="dead">
+<pre class="code">
+<span class="srcline"><span class="lineno"><a href="2,1" id="srcline1"> 1</a></span><span class="line"><span class="keyword">classdef</span> Visualizor &lt;matlab.System &amp; matlab.system.mixin.CustomIcon</span></span>
+<span class="srcline"><span class="lineno"><a href="2,2" id="srcline2"> 2</a></span><span class="line">    <span class="keyword">methods</span> (Access = protected)</span></span>
+</pre>
+</div>
+<pre class="code">
+<span class="srcline"><span class="lineno"><a href="2,3" id="srcline3"> 3</a></span><span class="line">        <span class="keyword">function</span> setupImpl(<span class="mxinfo " id="T40:U1">~</span>)</span></span>
+<span class="srcline"><span class="lineno"><a href="2,4" id="srcline4"> 4</a></span><span class="line">            <span class="comment">% Perform one-time calculations, such as computing constants</span></span></span>
+<span class="srcline"><span class="lineno"><a href="2,5" id="srcline5"> 5</a></span><span class="line">            <span class="autoExtrinsicFcn" id="F92N7:B20">figure</span>(1)</span></span>
+<span class="srcline"><span class="lineno"><a href="2,6" id="srcline6"> 6</a></span><span class="line">            <span class="mxinfo " id="T19:U2"><span class="autoExtrinsicFcn" id="F93N16:B24">plot</span>(<span class="mxinfo " id="T2:U3">0</span>, <span class="mxinfo " id="T2:U4">0</span>, <span class="mxinfo " id="T22:U5"><span class="string">'k.'</span></span>, <span class="mxinfo " id="T23:U6"><span class="string">'MarkerSize'</span></span>, <span class="mxinfo " id="T2:U7">20</span>)</span>;</span></span>
+<span class="srcline"><span class="lineno"><a href="2,7" id="srcline7"> 7</a></span><span class="line">            <span class="mxinfo " id="T19:U8"><span class="autoExtrinsicFcn" id="F94N19:B32">xlim</span>(<span class="mxinfo " id="T9:U9">[<span class="mxinfo " id="T2:U10">-<span class="mxinfo " id="T2:U11">1</span></span>, <span class="mxinfo " id="T2:U12">1</span>]</span>)</span>;</span></span>
+<span class="srcline"><span class="lineno"><a href="2,8" id="srcline8"> 8</a></span><span class="line">            <span class="mxinfo " id="T19:U13"><span class="autoExtrinsicFcn" id="F95N21:B40">ylim</span>(<span class="mxinfo " id="T9:U14">[<span class="mxinfo " id="T2:U15">-<span class="mxinfo " id="T2:U16">1</span></span>, <span class="mxinfo " id="T2:U17">1</span>]</span>)</span>;</span></span>
+<span class="srcline"><span class="lineno"><a href="2,9" id="srcline9"> 9</a></span><span class="line">            hold <span class="string">on</span></span></span>
+<span class="srcline"><span class="lineno"><a href="2,10" id="srcline10">10</a></span><span class="line">            grid <span class="string">on</span></span></span>
+<span class="srcline"><span class="lineno"><a href="2,11" id="srcline11">11</a></span><span class="line">            axis <span class="string">equal</span></span></span>
+<span class="srcline"><span class="lineno"><a href="2,12" id="srcline12">12</a></span><span class="line">            <span class="autoExtrinsicFcn" id="F106N17:B57">title</span>(<span class="string">"2DOF Robotic Arm Simulation"</span>)</span></span>
+<span class="srcline"><span class="lineno"><a href="2,13" id="srcline13">13</a></span><span class="line">            <span class="autoExtrinsicFcn" id="F114N18:B61">xlabel</span>(<span class="string">"x(m)"</span>)</span></span>
+<span class="srcline"><span class="lineno"><a href="2,14" id="srcline14">14</a></span><span class="line">            <span class="autoExtrinsicFcn" id="F122N20:B65">ylabel</span>(<span class="string">"y(m)"</span>)</span></span>
+<span class="srcline"><span class="lineno"><a href="2,15" id="srcline15">15</a></span><span class="line">            hold <span class="string">on</span></span></span>
+<span class="srcline"><span class="lineno"><a href="2,16" id="srcline16">16</a></span><span class="line">        <span class="keyword">end</span></span></span>
+<span class="srcline"><span class="lineno"><a href="2,17" id="srcline17">17</a></span><span class="line"></span></span>
+</pre>
+<div class="dead">
+<pre class="code">
+<span class="srcline"><span class="lineno"><a href="2,18" id="srcline18">18</a></span><span class="line">        <span class="keyword">function</span> icon = getIconImpl(~)</span></span>
+<span class="srcline"><span class="lineno"><a href="2,19" id="srcline19">19</a></span><span class="line">            <span class="comment">% Define icon for System block</span></span></span>
+<span class="srcline"><span class="lineno"><a href="2,20" id="srcline20">20</a></span><span class="line">            icon = matlab.system.display.Icon(<span class="string">'C:\Users\guoro\Downloads\WeChat Image_20220811230359.jpg'</span>);</span></span>
+<span class="srcline"><span class="lineno"><a href="2,21" id="srcline21">21</a></span><span class="line">        <span class="keyword">end</span></span></span>
+<span class="srcline"><span class="lineno"><a href="2,22" id="srcline22">22</a></span><span class="line">        </span></span>
+<span class="srcline"><span class="lineno"><a href="2,23" id="srcline23">23</a></span><span class="line">        <span class="keyword">function</span>[] = stepImpl(obj, q)</span></span>
+<span class="srcline"><span class="lineno"><a href="2,24" id="srcline24">24</a></span><span class="line">            l1 = 0.5;</span></span>
+<span class="srcline"><span class="lineno"><a href="2,25" id="srcline25">25</a></span><span class="line">            l2 = 0.25;</span></span>
+<span class="srcline"><span class="lineno"><a href="2,26" id="srcline26">26</a></span><span class="line">            <span class="comment">% calculate positions</span></span></span>
+<span class="srcline"><span class="lineno"><a href="2,27" id="srcline27">27</a></span><span class="line">            x1 = l1 * cos(q(1));</span></span>
+<span class="srcline"><span class="lineno"><a href="2,28" id="srcline28">28</a></span><span class="line">            y1 = l1 * sin(q(1));</span></span>
+<span class="srcline"><span class="lineno"><a href="2,29" id="srcline29">29</a></span><span class="line">            x2 = x1 + l2 * cos(q(2) - q(1));</span></span>
+<span class="srcline"><span class="lineno"><a href="2,30" id="srcline30">30</a></span><span class="line">            y2 = y1 + l2 * sin(q(2) - q(1));</span></span>
+<span class="srcline"><span class="lineno"><a href="2,31" id="srcline31">31</a></span><span class="line">            <span class="comment">% plot new</span></span></span>
+<span class="srcline"><span class="lineno"><a href="2,32" id="srcline32">32</a></span><span class="line">            arm1 = plot([0, x1], [0, y1], <span class="string">'b'</span>, <span class="string">'LineWidth'</span>, 2);</span></span>
+<span class="srcline"><span class="lineno"><a href="2,33" id="srcline33">33</a></span><span class="line">            arm2 = plot([x1, x2], [y1, y2], <span class="string">'b'</span>, <span class="string">'LineWidth'</span>, 2);</span></span>
+<span class="srcline"><span class="lineno"><a href="2,34" id="srcline34">34</a></span><span class="line">            joint1 = plot(0, 0, <span class="string">'r.'</span>, <span class="string">'MarkerSize'</span>, 12); <span class="comment">% active joint</span></span></span>
+<span class="srcline"><span class="lineno"><a href="2,35" id="srcline35">35</a></span><span class="line">            joint2 = plot(x1, y1, <span class="string">'g.'</span>, <span class="string">'MarkerSize'</span>, 12); <span class="comment">% passive joint </span></span></span>
+<span class="srcline"><span class="lineno"><a href="2,36" id="srcline36">36</a></span><span class="line">            <span class="comment">% Show plot</span></span></span>
+<span class="srcline"><span class="lineno"><a href="2,37" id="srcline37">37</a></span><span class="line">            figure(1);</span></span>
+<span class="srcline"><span class="lineno"><a href="2,38" id="srcline38">38</a></span><span class="line">            <span class="comment">% Delete Shit</span></span></span>
+<span class="srcline"><span class="lineno"><a href="2,39" id="srcline39">39</a></span><span class="line">            delete(arm1);</span></span>
+<span class="srcline"><span class="lineno"><a href="2,40" id="srcline40">40</a></span><span class="line">            delete(arm2);</span></span>
+<span class="srcline"><span class="lineno"><a href="2,41" id="srcline41">41</a></span><span class="line">            delete(joint1);</span></span>
+<span class="srcline"><span class="lineno"><a href="2,42" id="srcline42">42</a></span><span class="line">            delete(joint2);</span></span>
+<span class="srcline"><span class="lineno"><a href="2,43" id="srcline43">43</a></span><span class="line">        <span class="keyword">end</span></span></span>
+<span class="srcline"><span class="lineno"><a href="2,44" id="srcline44">44</a></span><span class="line">        </span></span>
+<span class="srcline"><span class="lineno"><a href="2,45" id="srcline45">45</a></span><span class="line">    <span class="keyword">end</span></span></span>
+<span class="srcline"><span class="lineno"><a href="2,46" id="srcline46">46</a></span><span class="line"><span class="keyword">end</span></span></span>
+<span class="srcline"><span class="lineno"><a href="2,47" id="srcline47">47</a></span><span class="line"> </span></span>
+</pre>
+</div>
+</body>
+</html>

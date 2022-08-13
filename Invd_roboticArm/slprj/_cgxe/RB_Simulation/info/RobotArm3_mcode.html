@@ -1,0 +1,78 @@
+<!-- saved from url=(0014)about:internet -->
+<html>
+<body>
+<script src="resources/eml_report_loadable_data.js"></script>
+<div class="dead">
+<pre class="code">
+<span class="srcline"><span class="lineno"><a href="3,1" id="srcline1"> 1</a></span><span class="line"><span class="keyword">classdef</span> <span class="mxinfo " id="T18:U1">RobotArm</span> &lt;matlab.System &amp; matlab.system.mixin.CustomIcon &amp; matlab.system.mixin.Propagates</span></span>
+<span class="srcline"><span class="lineno"><a href="3,2" id="srcline2"> 2</a></span><span class="line">    <span class="keyword">properties</span>(Access = private, Constant)</span></span>
+<span class="srcline"><span class="lineno"><a href="3,3" id="srcline3"> 3</a></span><span class="line">        <span class="comment">%Spring Joint Parameters</span></span></span>
+<span class="srcline"><span class="lineno"><a href="3,4" id="srcline4"> 4</a></span><span class="line">        Ks = 100;</span></span>
+<span class="srcline"><span class="lineno"><a href="3,5" id="srcline5"> 5</a></span><span class="line">        Bs = 10;</span></span>
+<span class="srcline"><span class="lineno"><a href="3,6" id="srcline6"> 6</a></span><span class="line">        thetaEq = 2/3 * pi;</span></span>
+<span class="srcline"><span class="lineno"><a href="3,7" id="srcline7"> 7</a></span><span class="line">        <span class="comment">% Simulation Parameters</span></span></span>
+<span class="srcline"><span class="lineno"><a href="3,8" id="srcline8"> 8</a></span><span class="line">        stepTime = 0.01;</span></span>
+<span class="srcline"><span class="lineno"><a href="3,9" id="srcline9"> 9</a></span><span class="line">    <span class="keyword">end</span></span></span>
+<span class="srcline"><span class="lineno"><a href="3,10" id="srcline10">10</a></span><span class="line">    </span></span>
+<span class="srcline"><span class="lineno"><a href="3,11" id="srcline11">11</a></span><span class="line">    <span class="keyword">methods</span> (Access = protected)</span></span>
+</pre>
+</div>
+<pre class="code">
+<span class="srcline"><span class="lineno"><a href="3,12" id="srcline12">12</a></span><span class="line">        </span></span>
+<span class="srcline"><span class="lineno"><a href="3,13" id="srcline13">13</a></span><span class="line">        <span class="keyword">function</span>[<span class="var type0" id="S11T0U41">q</span>] = stepImpl(<span class="var type0" id="S12T0U44">obj</span>, <span class="var type0" id="S11T0U45">q</span>, <span class="var type0" id="S13T0U46">cmdTorque</span>)</span></span>
+<span class="srcline"><span class="lineno"><a href="3,14" id="srcline14">14</a></span><span class="line">            </span></span>
+<span class="srcline"><span class="lineno"><a href="3,15" id="srcline15">15</a></span><span class="line">            <span class="var type0" id="S14T0U49">A</span> = [2.1875 - 0.625 * cos(2 * <span class="var type0" id="S11T0U62">q</span>(1) - <span class="var type0" id="S11T0U65">q</span>(2)), 0.104167 + 0.3125 * cos(2 * <span class="var type0" id="S11T0U77">q</span>(1) - <span class="var type0" id="S11T0U80">q</span>(2)); </span></span>
+<span class="srcline"><span class="lineno"><a href="3,16" id="srcline16">16</a></span><span class="line">                -0.104167 + 0.3125 * cos(2 * <span class="var type0" id="S11T0U94">q</span>(1) -<span class="var type0" id="S11T0U97">q</span>(2)), 0.104167];</span></span>
+<span class="srcline"><span class="lineno"><a href="3,17" id="srcline17">17</a></span><span class="line"></span></span>
+<span class="srcline"><span class="lineno"><a href="3,18" id="srcline18">18</a></span><span class="line">            <span class="var type0" id="S16T0U102">b0</span> = [- 25.025 * cos(<span class="var type0" id="S11T0U115">q</span>(1)) + 0.125 * cos(<span class="var type0" id="S11T0U123">q</span>(1) - <span class="var type0" id="S11T0U126">q</span>(2)) - 0.625 * sin(2 * <span class="var type0" id="S11T0U137">q</span>(1) - <span class="var type0" id="S11T0U140">q</span>(2)) * <span class="var type0" id="S11T0U144">q</span>(3) ^ 2 + 0.625 * sin(2 * <span class="var type0" id="S11T0U157">q</span>(1) - <span class="var type0" id="S11T0U160">q</span>(2)) * <span class="var type0" id="S11T0U163">q</span>(3) * <span class="var type0" id="S11T0U166">q</span>(4) - 0.3125 * sin(2 * <span class="var type0" id="S11T0U177">q</span>(1) - <span class="var type0" id="S11T0U180">q</span>(2)) * <span class="var type0" id="S11T0U184">q</span>(4)^2;</span></span>
+<span class="srcline"><span class="lineno"><a href="3,19" id="srcline19">19</a></span><span class="line">            -0.125 * cos(<span class="var type0" id="S11T0U196">q</span>(1) - <span class="var type0" id="S11T0U199">q</span>(2)) + 0.3125 * sin(2 * <span class="var type0" id="S11T0U210">q</span>(1) - <span class="var type0" id="S11T0U213">q</span>(2)) * <span class="var type0" id="S11T0U217">q</span>(3)^2];</span></span>
+<span class="srcline"><span class="lineno"><a href="3,20" id="srcline20">20</a></span><span class="line">        </span></span>
+<span class="srcline"><span class="lineno"><a href="3,21" id="srcline21">21</a></span><span class="line">            <span class="comment">% Calculate Spring Force</span></span></span>
+<span class="srcline"><span class="lineno"><a href="3,22" id="srcline22">22</a></span><span class="line">            <span class="var type0" id="S18T0U222">springForce</span> = [0; -1 * <span class="var type0" id="S12T0U233">obj</span>.Ks * (<span class="var type0" id="S11T0U238">q</span>(2) - <span class="var type0" id="S12T0U241">obj</span>.theta_eq) - <span class="var type0" id="S12T0U245">obj</span>.Bs * <span class="var type0" id="S11T0U248">q</span>(4)];</span></span>
+<span class="srcline"><span class="lineno"><a href="3,23" id="srcline23">23</a></span><span class="line">            </span></span>
+<span class="srcline"><span class="lineno"><a href="3,24" id="srcline24">24</a></span><span class="line">            <span class="comment">% Estimate Ground Reaction Force</span></span></span>
+<span class="srcline"><span class="lineno"><a href="3,25" id="srcline25">25</a></span><span class="line">        </span></span>
+<span class="srcline"><span class="lineno"><a href="3,26" id="srcline26">26</a></span><span class="line">            <span class="var type0" id="S19T0U252">b</span> = <span class="var type0" id="S16T0U255">b0</span> + <span class="var type0" id="S18T0U256">springForce</span> + <span class="var type0" id="S13T0U257">cmdTorque</span>;</span></span>
+<span class="srcline"><span class="lineno"><a href="3,27" id="srcline27">27</a></span><span class="line">            </span></span>
+<span class="srcline"><span class="lineno"><a href="3,28" id="srcline28">28</a></span><span class="line">            <span class="comment">% Update</span></span></span>
+<span class="srcline"><span class="lineno"><a href="3,29" id="srcline29">29</a></span><span class="line">            <span class="var type0" id="S20T0U261">dq</span>(1:2) = <span class="var type0" id="S11T0U266">q</span>(3:4);</span></span>
+<span class="srcline"><span class="lineno"><a href="3,30" id="srcline30">30</a></span><span class="line">            <span class="var type0" id="S20T0U273">dq</span>(3:4) = <span class="var type0" id="S14T0U278">A</span>\<span class="var type0" id="S19T0U279">b</span>;</span></span>
+<span class="srcline"><span class="lineno"><a href="3,31" id="srcline31">31</a></span><span class="line">            <span class="var type0" id="S11T0U282">q</span> = <span class="var type0" id="S11T0U284">q</span> + <span class="var type0" id="S20T0U286">dq</span> * <span class="var type0" id="S12T0U288">obj</span>.stepTime;            </span></span>
+<span class="srcline"><span class="lineno"><a href="3,32" id="srcline32">32</a></span><span class="line">        <span class="keyword">end</span></span></span>
+<span class="srcline"><span class="lineno"><a href="3,33" id="srcline33">33</a></span><span class="line"></span></span>
+</pre>
+<div class="dead">
+<pre class="code">
+<span class="srcline"><span class="lineno"><a href="3,34" id="srcline34">34</a></span><span class="line">        <span class="keyword">function</span> setupImpl(obj)</span></span>
+<span class="srcline"><span class="lineno"><a href="3,35" id="srcline35">35</a></span><span class="line">            <span class="comment">% Perform one-time calculations, such as computing constants</span></span></span>
+<span class="srcline"><span class="lineno"><a href="3,36" id="srcline36">36</a></span><span class="line">            q = [1/2 * pi; 2/3 * pi; 0; 0];</span></span>
+<span class="srcline"><span class="lineno"><a href="3,37" id="srcline37">37</a></span><span class="line">            dq = [0; 0; 0; 0];</span></span>
+<span class="srcline"><span class="lineno"><a href="3,38" id="srcline38">38</a></span><span class="line">        <span class="keyword">end</span></span></span>
+<span class="srcline"><span class="lineno"><a href="3,39" id="srcline39">39</a></span><span class="line"></span></span>
+<span class="srcline"><span class="lineno"><a href="3,40" id="srcline40">40</a></span><span class="line">        <span class="keyword">function</span> icon = getIconImpl(~)</span></span>
+<span class="srcline"><span class="lineno"><a href="3,41" id="srcline41">41</a></span><span class="line">            <span class="comment">% Define icon for System block</span></span></span>
+<span class="srcline"><span class="lineno"><a href="3,42" id="srcline42">42</a></span><span class="line">            icon = matlab.system.display.Icon(<span class="string">'C:\Users\guoro\Downloads\WeChat Image_20220811224032.jpg'</span>);</span></span>
+<span class="srcline"><span class="lineno"><a href="3,43" id="srcline43">43</a></span><span class="line">        <span class="keyword">end</span></span></span>
+<span class="srcline"><span class="lineno"><a href="3,44" id="srcline44">44</a></span><span class="line">        </span></span>
+<span class="srcline"><span class="lineno"><a href="3,45" id="srcline45">45</a></span><span class="line">        <span class="keyword">function</span> [size] = getOutputSizeImpl(~)</span></span>
+<span class="srcline"><span class="lineno"><a href="3,46" id="srcline46">46</a></span><span class="line">            size = [4 1];</span></span>
+<span class="srcline"><span class="lineno"><a href="3,47" id="srcline47">47</a></span><span class="line">        <span class="keyword">end</span></span></span>
+<span class="srcline"><span class="lineno"><a href="3,48" id="srcline48">48</a></span><span class="line">        </span></span>
+<span class="srcline"><span class="lineno"><a href="3,49" id="srcline49">49</a></span><span class="line">        <span class="keyword">function</span> [flag1] = isOutputFixedSizeImpl(~)</span></span>
+<span class="srcline"><span class="lineno"><a href="3,50" id="srcline50">50</a></span><span class="line">           flag1 = true; </span></span>
+<span class="srcline"><span class="lineno"><a href="3,51" id="srcline51">51</a></span><span class="line">        <span class="keyword">end</span></span></span>
+<span class="srcline"><span class="lineno"><a href="3,52" id="srcline52">52</a></span><span class="line">        </span></span>
+<span class="srcline"><span class="lineno"><a href="3,53" id="srcline53">53</a></span><span class="line">        <span class="keyword">function</span> [type] = getOutputDataTypeImpl(~)</span></span>
+<span class="srcline"><span class="lineno"><a href="3,54" id="srcline54">54</a></span><span class="line">           type = <span class="string">'double'</span>;</span></span>
+<span class="srcline"><span class="lineno"><a href="3,55" id="srcline55">55</a></span><span class="line">        <span class="keyword">end</span></span></span>
+<span class="srcline"><span class="lineno"><a href="3,56" id="srcline56">56</a></span><span class="line">        </span></span>
+<span class="srcline"><span class="lineno"><a href="3,57" id="srcline57">57</a></span><span class="line">        <span class="keyword">function</span> [flag1] = isOutputComplexImpl(~)</span></span>
+<span class="srcline"><span class="lineno"><a href="3,58" id="srcline58">58</a></span><span class="line">           flag1 = false; </span></span>
+<span class="srcline"><span class="lineno"><a href="3,59" id="srcline59">59</a></span><span class="line">        <span class="keyword">end</span></span></span>
+<span class="srcline"><span class="lineno"><a href="3,60" id="srcline60">60</a></span><span class="line">    <span class="keyword">end</span> </span></span>
+<span class="srcline"><span class="lineno"><a href="3,61" id="srcline61">61</a></span><span class="line"><span class="keyword">end</span></span></span>
+<span class="srcline"><span class="lineno"><a href="3,62" id="srcline62">62</a></span><span class="line"> </span></span>
+</pre>
+</div>
+</body>
+</html>

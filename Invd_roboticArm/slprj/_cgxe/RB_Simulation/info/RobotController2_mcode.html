@@ -1,0 +1,36 @@
+<!-- saved from url=(0014)about:internet -->
+<html>
+<body>
+<script src="resources/eml_report_loadable_data.js"></script>
+<div class="dead">
+<pre class="code">
+<span class="srcline"><span class="lineno"><a href="2,1" id="srcline1"> 1</a></span><span class="line"><span class="keyword">classdef</span> <span class="mxinfo " id="T9:U1">RobotController</span> &lt;matlab.System &amp; matlab.system.mixin.CustomIcon</span></span>
+<span class="srcline"><span class="lineno"><a href="2,2" id="srcline2"> 2</a></span><span class="line">    <span class="keyword">properties</span>(Access = protected)</span></span>
+<span class="srcline"><span class="lineno"><a href="2,3" id="srcline3"> 3</a></span><span class="line">        Kp = 1;</span></span>
+<span class="srcline"><span class="lineno"><a href="2,4" id="srcline4"> 4</a></span><span class="line">        Kd = 1;</span></span>
+<span class="srcline"><span class="lineno"><a href="2,5" id="srcline5"> 5</a></span><span class="line">    <span class="keyword">end</span></span></span>
+<span class="srcline"><span class="lineno"><a href="2,6" id="srcline6"> 6</a></span><span class="line">    </span></span>
+<span class="srcline"><span class="lineno"><a href="2,7" id="srcline7"> 7</a></span><span class="line">    <span class="keyword">methods</span>(Access = protected)</span></span>
+</pre>
+</div>
+<pre class="code">
+<span class="srcline"><span class="lineno"><a href="2,8" id="srcline8"> 8</a></span><span class="line">       <span class="keyword">function</span>[<span class="var type0" id="S7T0U26">cmdTorque</span>] = stepImpl(<span class="var type0" id="S8T0U29">obj</span>, <span class="var type0" id="S9T0U30">q_ref</span>, <span class="var type0" id="S10T0U31">q</span>)</span></span>
+<span class="srcline"><span class="lineno"><a href="2,9" id="srcline9"> 9</a></span><span class="line">          <span class="var type0" id="S7T0U34">cmdTorque</span> = zeros(2, 1);</span></span>
+<span class="srcline"><span class="lineno"><a href="2,10" id="srcline10">10</a></span><span class="line">          <span class="var type0" id="S7T0U42">cmdTorque</span>(1) = <span class="var type0" id="S8T0U46">obj</span>.Kp * (<span class="var type0" id="S9T0U51">q_ref</span>(1) - <span class="var type0" id="S10T0U54">q</span>(1));</span></span>
+<span class="srcline"><span class="lineno"><a href="2,11" id="srcline11">11</a></span><span class="line">          <span class="var type0" id="S7T0U59">cmdTorque</span>(2) = <span class="var type0" id="S8T0U63">obj</span>.Kp * (<span class="var type0" id="S9T0U68">q_ref</span>(2) - <span class="var type0" id="S10T0U71">q</span>(2));</span></span>
+<span class="srcline"><span class="lineno"><a href="2,12" id="srcline12">12</a></span><span class="line">       <span class="keyword">end</span></span></span>
+<span class="srcline"><span class="lineno"><a href="2,13" id="srcline13">13</a></span><span class="line"></span></span>
+</pre>
+<div class="dead">
+<pre class="code">
+<span class="srcline"><span class="lineno"><a href="2,14" id="srcline14">14</a></span><span class="line">       <span class="keyword">function</span> icon = getIconImpl(~)</span></span>
+<span class="srcline"><span class="lineno"><a href="2,15" id="srcline15">15</a></span><span class="line">           <span class="comment">% Define icon for System block</span></span></span>
+<span class="srcline"><span class="lineno"><a href="2,16" id="srcline16">16</a></span><span class="line">           icon = matlab.system.display.Icon(<span class="string">'C:\Users\guoro\Downloads\WeChat Image_20220811225038.jpg'</span>);</span></span>
+<span class="srcline"><span class="lineno"><a href="2,17" id="srcline17">17</a></span><span class="line">       <span class="keyword">end</span></span></span>
+<span class="srcline"><span class="lineno"><a href="2,18" id="srcline18">18</a></span><span class="line">    <span class="keyword">end</span></span></span>
+<span class="srcline"><span class="lineno"><a href="2,19" id="srcline19">19</a></span><span class="line"><span class="keyword">end</span></span></span>
+<span class="srcline"><span class="lineno"><a href="2,20" id="srcline20">20</a></span><span class="line"> </span></span>
+</pre>
+</div>
+</body>
+</html>
